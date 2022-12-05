@@ -1,13 +1,6 @@
 #!/bin/bash
 
 # Run chmod +x UbuntuScript.sh to make the file executable
-# Change login chances/age
-sed -i 's/PASS_MAX_DAYS.*$/PASS_MAX_DAYS 90/;s/PASS_MIN_DAYS.*$/PASS_MIN_DAYS 10/;s/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs
-echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pam.d/common-auth
-apt-get install libpam-cracklib
-sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password
-sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
-apt-get install auditd && auditctl -e 1
 
 startTime=$(date +"%s")
 printTime()
@@ -53,8 +46,13 @@ cp /etc/passwd ~/Desktop/backups/
 
 printTime "/etc/group and /etc/passwd files backed up."
 
-
-
+# Change login chances/age
+sed -i 's/PASS_MAX_DAYS.*$/PASS_MAX_DAYS 90/;s/PASS_MIN_DAYS.*$/PASS_MIN_DAYS 10/;s/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs
+echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pam.d/common-auth
+apt-get install libpam-cracklib
+sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password
+sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
+apt-get install auditd && auditctl -e 1
 
 #install firewall
 apt-get install ufw -y -qq
@@ -70,7 +68,6 @@ printTime "Daily update checks, download upgradeable packages, autoclean interva
 
 # echo "Check to verify that all update settings are correct."
 # update-manager
-
 apt-get update -qq
 apt-get upgrade -qq
 apt-get dist-upgrade -qq
@@ -173,13 +170,18 @@ printTime "Script is complete."
 
 echo "all sudo users:"
 mawk -F: '$1 == "sudo"' /etc/group
-echo "end 'all sudo users'"
+echo "--------------------------------------"
 echo "all users:"
 mawk -F: '$3 > 999 && $3 < 65534 {print $1}' /etc/passwd
-echo "end 'all users'"
+echo "--------------------------------------"
 echo "all empty passwords:"
 mawk -F: '$2 == ""' /etc/passwd
-echo "end 'all empty passwords'"
+echo "--------------------------------------"
 echo "all non root uid 0 users:"
 mawk -F: '$3 == 0 && $1 != "root"' /etc/passwd
-echo "end 'all non root uid 0 users'"
+echo "--------------------------------------"
+
+echo "installed stuff"
+comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
+
+
