@@ -203,12 +203,15 @@ git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-su
 git clone https://github.com/rebootuser/LinEnum
 ./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
 
-apt-get install -y debsums
+apt-get install debsums -y
 debsums -cae > logs/debsums.txt
 
+apt-get install npm -y
+echo "scan for open ports"
+nmap scanme.nmap.org
 
 #autoremove
-apt autoremove
+apt autoremove 
 
 
 touch ~/Desktop/logs/allusers.txt
