@@ -54,6 +54,9 @@ sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-passwor
 sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
 apt-get install auditd && auditctl -e 1
 
+#disable guest account
+echo 'allow-guest=false' >> /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+
 #install firewall
 apt-get install ufw -y -qq
 ufw enable
