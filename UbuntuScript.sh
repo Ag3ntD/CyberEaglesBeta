@@ -271,8 +271,8 @@ echo "all non root uid 0 users:"
 mawk -F: '$3 == 0 && $1 != "root"' /etc/passwd
 echo "--------------------------------------"
 
-echo "installed stuff. remove anything suspicious"
-comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
+echo "installed stuff located at logs.apps.txtt"
+comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u) > logs/apps.txt
 
 #nmap is a powerful tool look into it
 
