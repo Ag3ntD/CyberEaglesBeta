@@ -52,7 +52,7 @@ echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pa
 apt-get install libpam-cracklib
 sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password
 sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
-apt-get install auditd && auditctl -e 1
+apt-get install auditd && auditctl -e 1 -y -qq
 
 #disable guest account
 echo 'allow-guest=false' >> /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
@@ -79,9 +79,9 @@ echo "Daily update checks, download upgradeable packages, autoclean interval, an
 
 # echo "Check to verify that all update settings are correct."
 # update-manager
-apt-get update -qq
-apt-get upgrade -qq
-apt-get dist-upgrade -qq
+apt-get update -y -qq
+apt-get upgrade -y -qq
+apt-get dist-upgrade -y -qq
 echo "Ubuntu OS has checked for updates and has been upgraded."
 
 apt-get purge netcat* ncat socat socket sbd -y -qq
