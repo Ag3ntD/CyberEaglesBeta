@@ -79,6 +79,7 @@ echo "Daily update checks, download upgradeable packages, autoclean interval, an
 
 # echo "Check to verify that all update settings are correct."
 # update-manager
+echo "This might take a while"
 apt-get update -y -qq
 apt-get upgrade -y -qq
 apt-get dist-upgrade -y -qq
