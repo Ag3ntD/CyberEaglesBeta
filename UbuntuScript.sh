@@ -57,7 +57,15 @@ apt-get install auditd && auditctl -e 1
 #install firewall
 apt-get install ufw -y -qq
 ufw enable
+ufw allow https
+ufw allow https
 ufw deny 1337
+ufw deny 23
+ufw deny 2049
+ufw deny 515
+ufw deny 111
+ufw logging high
+ufw status verbose
 printTime "Firewall enabled."
 
 chmod 777 /etc/apt/apt.conf.d/10periodic
