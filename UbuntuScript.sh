@@ -1,6 +1,13 @@
 #!/bin/bash
 
 # Run chmod +x UbuntuScript.sh to make the file executable
+# Change login chances/age
+sed -i 's/PASS_MAX_DAYS.*$/PASS_MAX_DAYS 90/;s/PASS_MIN_DAYS.*$/PASS_MIN_DAYS 10/;s/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs
+echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pam.d/common-auth
+apt-get install libpam-cracklib
+sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password
+sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
+apt-get install auditd && auditctl -e 1
 
 startTime=$(date +"%s")
 printTime()
@@ -46,83 +53,6 @@ cp /etc/passwd ~/Desktop/backups/
 
 printTime "/etc/group and /etc/passwd files backed up."
 
-# --------------------------------------------------------------------------------------------------------------
-echo Type all user account names (everyone but you), with a space in between
-read -a users
-
-usersLength=${#users[@]}
-
-for (( i=0;i<$usersLength;i++))
-do
-	
-	echo ${users[${i}]}
-	echo Delete ${users[${i}]}? yes or no
-	read yn1
-	if [ $yn1 == yes ]
-	then
-		userdel -r ${users[${i}]}
-		printTime "${users[${i}]} has been deleted."
-	else	
-		echo Make ${users[${i}]} administrator? yes or no
-		read yn2								
-		if [ $yn2 == yes ]
-		then
-			gpasswd -a ${users[${i}]} sudo
-			gpasswd -a ${users[${i}]} adm
-			gpasswd -a ${users[${i}]} lpadmin
-			gpasswd -a ${users[${i}]} sambashare
-			printTime "${users[${i}]} has been made an administrator."
-		else
-			gpasswd -d ${users[${i}]} sudo
-			gpasswd -d ${users[${i}]} adm
-			gpasswd -d ${users[${i}]} lpadmin
-			gpasswd -d ${users[${i}]} sambashare
-			gpasswd -d ${users[${i}]} root
-			printTime "${users[${i}]} has been made a standard user."
-		fi
-			
-		echo -e "CyberPatriotIsCool123!\nCyberPatriotIsCool123!" | passwd ${users[${i}]}
-		printTime "${users[${i}]} has been given the password 'CyberPatriotIsCool123!'."
-		
-		passwd -x90 -n10 -w7 ${users[${i}]}
-		usermod -L ${users[${i}]}
-		printTime "${users[${i}]}'s password has been given a maximum age of 90 days, minimum of 10 days, and warning of 7 days. ${users[${i}]}'s account has been locked."
-	fi
-done
-
-
-echo Type user account names of users you want to add, with a space in between
-read -a usersNew
-
-usersNewLength=${#usersNew[@]}	
-
-for (( i=0;i<$usersNewLength;i++))
-do
-	echo ${usersNew[${i}]}
-	adduser ${usersNew[${i}]}
-	printTime "A user account for ${usersNew[${i}]} has been created."
-	echo Make ${usersNew[${i}]} administrator? yes or no
-	read ynNew								
-	if [ $ynNew == yes ]
-	then
-		gpasswd -a ${usersNew[${i}]} sudo
-		gpasswd -a ${usersNew[${i}]} adm
-		gpasswd -a ${usersNew[${i}]} lpadmin
-		gpasswd -a ${usersNew[${i}]} sambashare
-		printTime "${usersNew[${i}]} has been made an administrator."
-	else
-		printTime "${usersNew[${i}]} has been made a standard user."
-	fi
-	
-	echo -e "CyberPatriot123!\nCyberPatriot123!" | passwd ${usersNew[${i}]}
-	printTime "${usersNew[${i}]} has been given the password 'CyberPatriot123!'."
-
-	passwd -x90 -n10 -w7 ${usersNew[${i}]}
-	usermod -L ${usersNew[${i}]}
-	printTime "${usersNew[${i}]}'s password has been given a maximum age of 30 days, minimum of 3 days, and warning of 7 days. ${users[${i}]}'s account has been locked."
-done
-
-# -----------------------------------------------------------------------------------------
 
 
 
@@ -146,111 +76,15 @@ apt-get upgrade -qq
 apt-get dist-upgrade -qq
 printTime "Ubuntu OS has checked for updates and has been upgraded."
 
-# find / -name "*.midi" -type f >> ~/Desktop/Script.log
-# find / -name "*.mid" -type f >> ~/Desktop/Script.log
-# find / -name "*.mod" -type f >> ~/Desktop/Script.log
-# find / -name "*.mp3" -type f >> ~/Desktop/Script.log
-# find / -name "*.mp2" -type f >> ~/Desktop/Script.log
-# find / -name "*.mpa" -type f >> ~/Desktop/Script.log
-# find / -name "*.abs" -type f >> ~/Desktop/Script.log
-# find / -name "*.mpega" -type f >> ~/Desktop/Script.log
-# find / -name "*.au" -type f >> ~/Desktop/Script.log
-# find / -name "*.snd" -type f >> ~/Desktop/Script.log
-# find / -name "*.wav" -type f >> ~/Desktop/Script.log
-# find / -name "*.aiff" -type f >> ~/Desktop/Script.log
-# find / -name "*.aif" -type f >> ~/Desktop/Script.log
-# find / -name "*.sid" -type f >> ~/Desktop/Script.log
-# find / -name "*.flac" -type f >> ~/Desktop/Script.log
-# find / -name "*.ogg" -type f >> ~/Desktop/Script.log
-# printTime "All audio files has been listed."
-
-# find / -name "*.mpeg" -type f >> ~/Desktop/Script.log
-# find / -name "*.mpg" -type f >> ~/Desktop/Script.log
-# find / -name "*.mpe" -type f >> ~/Desktop/Script.log
-# find / -name "*.dl" -type f >> ~/Desktop/Script.log
-# find / -name "*.movie" -type f >> ~/Desktop/Script.log
-# find / -name "*.movi" -type f >> ~/Desktop/Script.log
-# find / -name "*.mv" -type f >> ~/Desktop/Script.log
-# find / -name "*.iff" -type f >> ~/Desktop/Script.log
-# find / -name "*.anim5" -type f >> ~/Desktop/Script.log
-# find / -name "*.anim3" -type f >> ~/Desktop/Script.log
-# find / -name "*.anim7" -type f >> ~/Desktop/Script.log
-# find / -name "*.avi" -type f >> ~/Desktop/Script.log
-# find / -name "*.vfw" -type f >> ~/Desktop/Script.log
-# find / -name "*.avx" -type f >> ~/Desktop/Script.log
-# find / -name "*.fli" -type f >> ~/Desktop/Script.log
-# find / -name "*.flc" -type f >> ~/Desktop/Script.log
-# find / -name "*.mov" -type f >> ~/Desktop/Script.log
-# find / -name "*.qt" -type f >> ~/Desktop/Script.log
-# find / -name "*.spl" -type f >> ~/Desktop/Script.log
-# find / -name "*.swf" -type f >> ~/Desktop/Script.log
-# find / -name "*.dcr" -type f >> ~/Desktop/Script.log
-# find / -name "*.dir" -type f >> ~/Desktop/Script.log
-# find / -name "*.dxr" -type f >> ~/Desktop/Script.log
-# find / -name "*.rpm" -type f >> ~/Desktop/Script.log
-# find / -name "*.rm" -type f >> ~/Desktop/Script.log
-# find / -name "*.smi" -type f >> ~/Desktop/Script.log
-# find / -name "*.ra" -type f >> ~/Desktop/Script.log
-# find / -name "*.ram" -type f >> ~/Desktop/Script.log
-# find / -name "*.rv" -type f >> ~/Desktop/Script.log
-# find / -name "*.wmv" -type f >> ~/Desktop/Script.log
-# find / -name "*.asf" -type f >> ~/Desktop/Script.log
-# find / -name "*.asx" -type f >> ~/Desktop/Script.log
-# find / -name "*.wma" -type f >> ~/Desktop/Script.log
-# find / -name "*.wax" -type f >> ~/Desktop/Script.log
-# find / -name "*.wmv" -type f >> ~/Desktop/Script.log
-# find / -name "*.wmx" -type f >> ~/Desktop/Script.log
-# find / -name "*.3gp" -type f >> ~/Desktop/Script.log
-# find / -name "*.mov" -type f >> ~/Desktop/Script.log
-# find / -name "*.mp4" -type f >> ~/Desktop/Script.log
-# find / -name "*.avi" -type f >> ~/Desktop/Script.log
-# find / -name "*.swf" -type f >> ~/Desktop/Script.log
-# find / -name "*.flv" -type f >> ~/Desktop/Script.log
-# find / -name "*.m4v" -type f >> ~/Desktop/Script.log
-# printTime "All video files have been listed in /Desktop/Script.log."
-
-# find / -name "*.tiff" -type f >> ~/Desktop/Script.log
-# find / -name "*.tif" -type f >> ~/Desktop/Script.log
-# find / -name "*.rs" -type f >> ~/Desktop/Script.log
-# find / -name "*.im1" -type f >> ~/Desktop/Script.log
-# find / -name "*.gif" -type f >> ~/Desktop/Script.log
-# find / -name "*.jpeg" -type f >> ~/Desktop/Script.log
-# find / -name "*.jpg" -type f >> ~/Desktop/Script.log
-# find / -name "*.jpe" -type f >> ~/Desktop/Script.log
-# find / -name "*.png" -type f >> ~/Desktop/Script.log
-# find / -name "*.rgb" -type f >> ~/Desktop/Script.log
-# find / -name "*.xwd" -type f >> ~/Desktop/Script.log
-# find / -name "*.xpm" -type f >> ~/Desktop/Script.log
-# find / -name "*.ppm" -type f >> ~/Desktop/Script.log
-# find / -name "*.pbm" -type f >> ~/Desktop/Script.log
-# find / -name "*.pgm" -type f >> ~/Desktop/Script.log
-# find / -name "*.pcx" -type f >> ~/Desktop/Script.log
-# find / -name "*.ico" -type f >> ~/Desktop/Script.log
-# find / -name "*.svg" -type f >> ~/Desktop/Script.log
-# find / -name "*.svgz" -type f >> ~/Desktop/Script.log
-# printTime "All image files have been listed in /Desktop/Script.log."
-
-# find / -name "*.php" -type f >> ~/Desktop/Script.log
-# printTime "All PHP files have been listed in /Desktop/Script.log. ('/var/cache/dictionaries-common/sqspell.php' is a system PHP file)"
-
-apt-get purge netcat -y -qq
-apt-get purge netcat-openbsd -y -qq
-apt-get purge netcat-traditional -y -qq
-apt-get purge ncat -y -qq
-apt-get purge pnetcat -y -qq
-apt-get purge socat -y -qq
-apt-get purge sock -y -qq
-apt-get purge socket -y -qq
-apt-get purge sbd -y -qq
+apt-get purge netcat netcat-openbsd netcat-traditional ncat socat socket sbd -y -qq
+#sock and pnetcat cannot be found and were removed from this line
 rm /usr/bin/nc
 printTime "Netcat and all other instances have been removed."
 
-apt-get purge john -y -qq
-apt-get purge john-data -y -qq
+apt-get purge john john-data -y -qq
 printTime "John the Ripper has been removed."
 
-apt-get purge hydra -y -qq
-apt-get purge hydra-gtk -y -qq
+apt-get purge hydra hydra-gtk -y -qq
 printTime "Hydra has been removed."
 
 apt-get purge aircrack-ng -y -qq
@@ -262,8 +96,7 @@ printTime "FCrackZIP has been removed."
 apt-get purge lcrack -y -qq
 printTime "LCrack has been removed."
 
-apt-get purge ophcrack -y -qq
-apt-get purge ophcrack-cli -y -qq
+apt-get purge ophcrack ophcrack-cli -y -qq
 printTime "OphCrack has been removed."
 
 apt-get purge pdfcrack -y -qq
@@ -287,43 +120,19 @@ dpkg -l | egrep "crack|hack" >> ~/Desktop/Script.log
 apt-get purge logkeys -y -qq
 printTime "LogKeys has been removed."
 
-apt-get purge zeitgeist-core -y -qq
-apt-get purge zeitgeist-datahub -y -qq
-apt-get purge python-zeitgeist -y -qq
-apt-get purge rhythmbox-plugin-zeitgeist -y -qq
-apt-get purge zeitgeist -y -qq
+apt-get purge zeitgeist-core zeitgeist-datahub python-zeitgeist rhythmbox-plugin-zeitgeist zeitgeist -y -qq
 printTime "Zeitgeist has been removed."
 
-apt-get purge nfs-kernel-server -y -qq
-apt-get purge nfs-common -y -qq
-apt-get purge portmap -y -qq
-apt-get purge rpcbind -y -qq
-apt-get purge autofs -y -qq
+apt-get purge nfs-kernel-server nfs-common portmap rpcbind autofs -y -qq
 printTime "NFS has been removed."
 
-apt-get purge nginx -y -qq
-apt-get purge nginx-common -y -qq
+apt-get purge nginx nginx-common -y -qq
 printTime "NGINX has been removed."
 
-apt-get purge inetd -y -qq
-apt-get purge openbsd-inetd -y -qq
-apt-get purge xinetd -y -qq
-apt-get purge inetutils-ftp -y -qq
-apt-get purge inetutils-ftpd -y -qq
-apt-get purge inetutils-inetd -y -qq
-apt-get purge inetutils-ping -y -qq
-apt-get purge inetutils-syslogd -y -qq
-apt-get purge inetutils-talk -y -qq
-apt-get purge inetutils-talkd -y -qq
-apt-get purge inetutils-telnet -y -qq
-apt-get purge inetutils-telnetd -y -qq
-apt-get purge inetutils-tools -y -qq
-apt-get purge inetutils-traceroute -y -qq
+apt-get purge inetd openbsd-inetd xinetd inetutils-ftp inetutils-ftpd inetutils-inetd inetutils-ping inetutils-syslogd inetutils-talk inetutils-talkd inetutils-telnet inetutils-telnetd inetutils-tools inetutils-traceroute -y -qq
 printTime "Inetd (super-server) and all inet utilities have been removed."
 
-apt-get purge vnc4server -y -qq
-apt-get purge vncsnapshot -y -qq
-apt-get purge vtgrab -y -qq
+apt-get purge vnc4server vncsnapshot vtgrab -y -qq
 printTime "VNC has been removed."
 
 apt-get purge snmp -y -qq
@@ -361,3 +170,16 @@ cp /var/log/syslog ~/Desktop/logs/syslog.log
 printTime "System log has been created."
 
 printTime "Script is complete."
+
+echo "all sudo users:"
+mawk -F: '$1 == "sudo"' /etc/group
+echo "end 'all sudo users'"
+echo "all users:"
+mawk -F: '$3 > 999 && $3 < 65534 {print $1}' /etc/passwd
+echo "end 'all users'"
+echo "all empty passwords:"
+mawk -F: '$2 == ""' /etc/passwd
+echo "end 'all empty passwords'"
+echo "all non root uid 0 users:"
+mawk -F: '$3 == 0 && $1 != "root"' /etc/passwd
+echo "end 'all non root uid 0 users'"
