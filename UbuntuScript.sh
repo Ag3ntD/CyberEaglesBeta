@@ -226,6 +226,10 @@ apt-get install npm -y
 echo "scan for open ports"
 nmap scanme.nmap.org
 
+apt-get install policycoreutils selinux-basics selinux-utils -y
+selinux-activate
+echo "installed SELinux"
+
 #autoremove
 apt autoremove -y
 
@@ -276,6 +280,7 @@ echo "installed stuff located at logs.apps.txtt"
 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u) > logs/apps.txt
 
 #nmap is a powerful tool look into it
+echo "check log files for any warnings"
 
 
 
