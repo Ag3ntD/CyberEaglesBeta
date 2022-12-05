@@ -139,6 +139,26 @@ apt-get upgrade openssl libssl-dev
 apt-cache policy openssl libssl-dev
 printTime "OpenSSL heart bleed bug has been fixed."
 
+apt-get purge ftp -y -qq
+apt-get purge vsftpd -y -qq
+apt-get purge samba -y -qq
+apt-get purge prelink -y -qq
+apt-get purge bind9 -y -qq
+apt-get purge slapd -y -qq
+apt-get purge isc-dhcp-server -y -qq
+apt-get purge avahi-daemon -y -qq
+apt-get purge xserver-xorg* -y -qq
+apt-get purge ntp -y -qq
+apt-get purge apache2 -y -qq
+apt-get purge dovecot-imapd dovecot-pop3d -y -qq
+apt-get purge squid -y -qq
+apt-get purge rsync -y -qq
+apt-get purge nis -y -qq
+apt-get purge rsh-client -y -qq
+apt-get purge talk -y -qq
+apt-get purge ldap-utils -y -qq
+apt-get purge rpcbin -y -qq
+
 touch ~/Desktop/logs/allusers.txt
 uidMin=$(grep "^UID_MIN" /etc/login.defs)
 uidMax=$(grep "^UID_MAX" /etc/login.defs)
