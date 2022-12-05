@@ -204,6 +204,11 @@ git clone https://github.com/rebootuser/LinEnum
 apt-get install -y debsums
 #run using debsums -cae > logs/debsums.txt
 
+
+#autoremove
+apt autoremove
+
+
 touch ~/Desktop/logs/allusers.txt
 uidMin=$(grep "^UID_MIN" /etc/login.defs)
 uidMax=$(grep "^UID_MAX" /etc/login.defs)
