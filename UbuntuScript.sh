@@ -5,24 +5,24 @@
 startTime=$(date +"%s")
 printTime()
 {
-	endTime=$(date +"%s")
-	diffTime=$(($endTime-$startTime))
-	if [ $(($diffTime / 60)) -lt 10 ]
-	then
-		if [ $(($diffTime % 60)) -lt 10 ]
-		then
-			echo -e "0$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-		else
-			echo -e "0$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-		fi
-	else
-		if [ $(($diffTime % 60)) -lt 10 ]
-		then
-			echo -e "$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-		else
-			echo -e "$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-		fi
-	fi
+    endTime=$(date +"%s")
+    diffTime=$(($endTime-$startTime))
+    if [ $(($diffTime / 60)) -lt 10 ]
+    then
+        if [ $(($diffTime % 60)) -lt 10 ]
+        then
+            echo -e "0$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
+        else
+            echo -e "0$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
+        fi
+    else
+        if [ $(($diffTime % 60)) -lt 10 ]
+        then
+            echo -e "$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
+        else
+            echo -e "$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
+        fi
+    fi
 }
 
 touch ~/Desktop/Script.log
@@ -34,17 +34,17 @@ then
   echo This script must be run as root
   exit
 fi
-printTime "Script is being run as root."
+echo "Script is being run as root."
 
 # Backups
 mkdir -p ~/Desktop/backups
 chmod 777 ~/Desktop/backups
-printTime "Backups folder created on the Desktop."
+echo "Backups folder created on the Desktop."
 
 cp /etc/group ~/Desktop/backups/
 cp /etc/passwd ~/Desktop/backups/
 
-printTime "/etc/group and /etc/passwd files backed up."
+echo "/etc/group and /etc/passwd files backed up."
 
 # Change login chances/age
 sed -i 's/PASS_MAX_DAYS.*$/PASS_MAX_DAYS 90/;s/PASS_MIN_DAYS.*$/PASS_MIN_DAYS 10/;s/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs
@@ -69,131 +69,135 @@ ufw deny 515
 ufw deny 111
 ufw logging high
 ufw status verbose
-printTime "Firewall enabled."
+echo "Firewall enabled."
 
 chmod 777 /etc/apt/apt.conf.d/10periodic
 cp /etc/apt/apt.conf.d/10periodic ~/Desktop/backups/
 echo -e "APT::Periodic::Update-Package-Lists \"1\";\nAPT::Periodic::Download-Upgradeable-Packages \"1\";\nAPT::Periodic::AutocleanInterval \"1\";\nAPT::Periodic::Unattended-Upgrade \"1\";" > /etc/apt/apt.conf.d/10periodic
 chmod 644 /etc/apt/apt.conf.d/10periodic
-printTime "Daily update checks, download upgradeable packages, autoclean interval, and unattended upgrade enabled."
+echo "Daily update checks, download upgradeable packages, autoclean interval, and unattended upgrade enabled."
 
 # echo "Check to verify that all update settings are correct."
 # update-manager
 apt-get update -qq
 apt-get upgrade -qq
 apt-get dist-upgrade -qq
-printTime "Ubuntu OS has checked for updates and has been upgraded."
+echo "Ubuntu OS has checked for updates and has been upgraded."
 
 apt-get purge netcat* ncat socat socket sbd -y -qq
 #sock and pnetcat cannot be found and were removed from this line
 rm /usr/bin/nc
-printTime "Netcat and all other instances have been removed."
+echo "Netcat and all other instances have been removed."
 
 apt-get purge john john-data -y -qq
-printTime "John the Ripper has been removed."
+echo "John the Ripper has been removed."
 
 apt-get purge hydra hydra-gtk -y -qq
-printTime "Hydra has been removed."
+echo "Hydra has been removed."
 
 apt-get purge aircrack-ng -y -qq
-printTime "Aircrack-NG has been removed."
+echo "Aircrack-NG has been removed."
 
 apt-get purge fcrackzip -y -qq
-printTime "FCrackZIP has been removed."
+echo "FCrackZIP has been removed."
 
 apt-get purge ophcrack ophcrack-cli -y -qq
-printTime "OphCrack has been removed."
+echo "OphCrack has been removed."
 
 apt-get purge pdfcrack -y -qq
-printTime "PDFCrack has been removed."
+echo "PDFCrack has been removed."
 
 apt-get purge rarcrack -y -qq
-printTime "RARCrack has been removed."
+echo "RARCrack has been removed."
 
 apt-get purge sipcrack -y -qq
-printTime "SipCrack has been removed."
+echo "SipCrack has been removed."
 
 apt-get purge irpas -y -qq
-printTime "IRPAS has been removed."
+echo "IRPAS has been removed."
 
-printTime 'Are there any hacking tools shown? (not counting libcrack2:amd64 or cracklib-runtime)'
+echo 'Are there any hacking tools shown? (not counting libcrack2:amd64 or cracklib-runtime)'
 dpkg -l | egrep "crack|hack" >> ~/Desktop/Script.log
 
 apt-get purge zeitgeist* rhythmbox-plugin-zeitgeist zeitgeist -y -qq
-printTime "Zeitgeist has been removed."
+echo "Zeitgeist has been removed."
 
 apt-get purge nfs-kernel-server nfs-common portmap rpcbind autofs -y -qq
-printTime "NFS has been removed."
+echo "NFS has been removed."
 
 apt-get purge nginx nginx-common -y -qq
-printTime "NGINX has been removed."
+echo "NGINX has been removed."
 
 apt-get purge inetd openbsd-inetd xinetd inetutils* -y -qq
-printTime "Inetd (super-server) and all inet utilities have been removed."
+echo "Inetd (super-server) and all inet utilities have been removed."
 
 apt-get purge vnc4server vncsnapshot vtgrab -y -qq
-printTime "VNC has been removed."
+echo "VNC has been removed."
 
 apt-get purge snmp -y -qq
-printTime "SNMP has been removed."
+echo "SNMP has been removed."
 
 apt-get upgrade openssl libssl-dev
 apt-cache policy openssl libssl-dev
-printTime "OpenSSL heart bleed bug has been fixed."
+echo "OpenSSL heart bleed bug has been fixed."
 
 apt-get purge ftp -y -qq
-printTime "ftp was removed"
+echo "ftp was removed"
 
 apt-get purge vsftpd -y -qq
-printTime "vsftpd was removed"
+echo "vsftpd was removed"
 
 apt-get purge samba -y -qq
-printTime "samba was removed"
+echo "samba was removed"
 
 apt-get purge prelink -y -qq
-printTime "prelink was removed"
+echo "prelink was removed"
 
 apt-get purge bind9 -y -qq
-printTime "bind9 was removed"
+echo "bind9 was removed"
 
 apt-get purge slapd -y -qq
-printTime "slapd was removed"
+echo "slapd was removed"
 
 apt-get purge isc-dhcp-server -y -qq
-printTime "isc-dhcp-server was removed"
+echo "isc-dhcp-server was removed"
 
 apt-get purge avahi-daemon -y -qq
-printTime "avahi-daemon was removed"
+echo "avahi-daemon was removed"
 
 apt-get purge xserver-xorg* -y -qq
-printTime "xserver-xorg was removed"
+echo "xserver-xorg was removed"
 
 apt-get purge ntp -y -qq
-printTime "ntp was removed"
+echo "ntp was removed"
 
 apt-get purge dovecot-imapd dovecot-pop3d -y -qq
-printTime "dovecot was removed"
+echo "dovecot was removed"
 
 apt-get purge squid -y -qq
-printTime "squid was removed"
+echo "squid was removed"
 
 apt-get purge rsync -y -qq
-printTime "rsync was removed"
+echo "rsync was removed"
 
 apt-get purge nis -y -qq
-printTime "nis was removed"
+echo "nis was removed"
 
 apt-get purge rsh-client -y -qq
-printTime "rsh-client was removed"
+echo "rsh-client was removed"
 
 apt-get purge talk -y -qq
-printTime "talk was removed"
+echo "talk was removed"
 
 apt-get purge ldap-utils -y -qq
-printTime "ldap-utils was removed"
+echo "ldap-utils was removed"
 
 apt-get purge rpcbin -y -qq
-printTime "rpcbin was removed"
+echo "rpcbin was removed"
+
+
+echo "creating logs directory"
+mkdir -p logs/
 
 apt-get install apparmor -y
 apt-get install apparmor-profiles -y
@@ -222,7 +226,7 @@ echo "scan for open ports"
 nmap scanme.nmap.org
 
 #autoremove
-apt autoremove 
+apt autoremove -y
 
 
 touch ~/Desktop/logs/allusers.txt
@@ -232,27 +236,27 @@ echo -e "User Accounts:" >> ~/Desktop/logs/allusers.txt
 awk -F':' -v "min=${uidMin##UID_MIN}" -v "max=${uidMax##UID_MAX}" '{ if ( $3 >= min && $3 <= max  && $7 != "/sbin/nologin" ) print $0 }' /etc/passwd >> ~/Desktop/logs/allusers.txt
 echo -e "\nSystem Accounts:" >> ~/Desktop/logs/allusers.txt
 awk -F':' -v "min=${uidMin##UID_MIN}" -v "max=${uidMax##UID_MAX}" '{ if ( !($3 >= min && $3 <= max  && $7 != "/sbin/nologin")) print $0 }' /etc/passwd >> ~/Desktop/logs/allusers.txt
-printTime "All users have been logged."
+echo "All users have been logged."
 cp /etc/services ~/Desktop/logs/allports.log
-printTime "All ports log has been created."
+echo "All ports log has been created."
 dpkg -l > ~/Desktop/logs/packages.log
-printTime "All packages log has been created."
+echo "All packages log has been created."
 apt-mark showmanual > ~/Desktop/logs/manuallyinstalled.log
-printTime "All manually instealled packages log has been created."
+echo "All manually instealled packages log has been created."
 service --status-all > ~/Desktop/logs/allservices.txt
-printTime "All running services log has been created."
+echo "All running services log has been created."
 ps ax > ~/Desktop/logs/processes.log
-printTime "All running processes log has been created."
+echo "All running processes log has been created."
 ss -l > ~/Desktop/logs/socketconnections.log
-printTime "All socket connections log has been created."
+echo "All socket connections log has been created."
 sudo netstat -tlnp > ~/Desktop/logs/listeningports.log
-printTime "All listening ports log has been created."
+echo "All listening ports log has been created."
 cp /var/log/auth.log ~/Desktop/logs/auth.log
-printTime "Auth log has been created."
+echo "Auth log has been created."
 cp /var/log/syslog ~/Desktop/logs/syslog.log
-printTime "System log has been created."
+echo "System log has been created."
 
-printTime "Script is complete."
+echo "Script is complete."
 
 echo "all sudo users:"
 mawk -F: '$1 == "sudo"' /etc/group
@@ -271,4 +275,6 @@ echo "installed stuff. remove anything suspicious"
 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
 
 #nmap is a powerful tool look into it
+
+
 
