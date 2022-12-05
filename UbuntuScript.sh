@@ -73,7 +73,7 @@ apt-get upgrade -qq
 apt-get dist-upgrade -qq
 printTime "Ubuntu OS has checked for updates and has been upgraded."
 
-apt-get purge netcat netcat-openbsd netcat-traditional ncat socat socket sbd -y -qq
+apt-get purge netcat* ncat socat socket sbd -y -qq
 #sock and pnetcat cannot be found and were removed from this line
 rm /usr/bin/nc
 printTime "Netcat and all other instances have been removed."
@@ -90,17 +90,11 @@ printTime "Aircrack-NG has been removed."
 apt-get purge fcrackzip -y -qq
 printTime "FCrackZIP has been removed."
 
-apt-get purge lcrack -y -qq
-printTime "LCrack has been removed."
-
 apt-get purge ophcrack ophcrack-cli -y -qq
 printTime "OphCrack has been removed."
 
 apt-get purge pdfcrack -y -qq
 printTime "PDFCrack has been removed."
-
-apt-get purge pyrit -y -qq
-printTime "Pyrit has been removed."
 
 apt-get purge rarcrack -y -qq
 printTime "RARCrack has been removed."
@@ -114,10 +108,7 @@ printTime "IRPAS has been removed."
 printTime 'Are there any hacking tools shown? (not counting libcrack2:amd64 or cracklib-runtime)'
 dpkg -l | egrep "crack|hack" >> ~/Desktop/Script.log
 
-apt-get purge logkeys -y -qq
-printTime "LogKeys has been removed."
-
-apt-get purge zeitgeist-core zeitgeist-datahub python-zeitgeist rhythmbox-plugin-zeitgeist zeitgeist -y -qq
+apt-get purge zeitgeist* rhythmbox-plugin-zeitgeist zeitgeist -y -qq
 printTime "Zeitgeist has been removed."
 
 apt-get purge nfs-kernel-server nfs-common portmap rpcbind autofs -y -qq
@@ -126,7 +117,7 @@ printTime "NFS has been removed."
 apt-get purge nginx nginx-common -y -qq
 printTime "NGINX has been removed."
 
-apt-get purge inetd openbsd-inetd xinetd inetutils-ftp inetutils-ftpd inetutils-inetd inetutils-ping inetutils-syslogd inetutils-talk inetutils-talkd inetutils-telnet inetutils-telnetd inetutils-tools inetutils-traceroute -y -qq
+apt-get purge inetd openbsd-inetd xinetd inetutils* -y -qq
 printTime "Inetd (super-server) and all inet utilities have been removed."
 
 apt-get purge vnc4server vncsnapshot vtgrab -y -qq
@@ -140,36 +131,76 @@ apt-cache policy openssl libssl-dev
 printTime "OpenSSL heart bleed bug has been fixed."
 
 apt-get purge ftp -y -qq
+printTime "ftp was removed"
+
 apt-get purge vsftpd -y -qq
+printTime "vsftpd was removed"
+
 apt-get purge samba -y -qq
+printTime "samba was removed"
+
 apt-get purge prelink -y -qq
+printTime "prelink was removed"
+
 apt-get purge bind9 -y -qq
+printTime "bind9 was removed"
+
 apt-get purge slapd -y -qq
+printTime "slapd was removed"
+
 apt-get purge isc-dhcp-server -y -qq
+printTime "isc-dhcp-server was removed"
+
 apt-get purge avahi-daemon -y -qq
+printTime "avahi-daemon was removed"
+
 apt-get purge xserver-xorg* -y -qq
+printTime "xserver-xorg was removed"
+
 apt-get purge ntp -y -qq
-apt-get purge apache2 -y -qq
+printTime "ntp was removed"
+
 apt-get purge dovecot-imapd dovecot-pop3d -y -qq
+printTime "dovecot was removed"
+
 apt-get purge squid -y -qq
+printTime "squid was removed"
+
 apt-get purge rsync -y -qq
+printTime "rsync was removed"
+
 apt-get purge nis -y -qq
+printTime "nis was removed"
+
 apt-get purge rsh-client -y -qq
+printTime "rsh-client was removed"
+
 apt-get purge talk -y -qq
+printTime "talk was removed"
+
 apt-get purge ldap-utils -y -qq
+printTime "ldap-utils was removed"
+
 apt-get purge rpcbin -y -qq
+printTime "rpcbin was removed"
 
 apt-get install apparmor -y
+
 apt-get install clamav -y
 #run using clamscan -rbell -i > logs/clamav.txt
+
 apt-get install rkhunter -y
 #run using rkhunter -c --sk > logs/rkhunter.txt
+
 apt-get install lynis -y 
 #run using lynis -c --quick > logs/lynis.txt
+
 git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
 #run using ./privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh > logs/linpeas.txt
+
 git clone https://github.com/rebootuser/LinEnum
 #run using ./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
+
 apt-get install -y debsums
 #run using debsums -cae > logs/debsums.txt
 
@@ -215,7 +246,7 @@ echo "all non root uid 0 users:"
 mawk -F: '$3 == 0 && $1 != "root"' /etc/passwd
 echo "--------------------------------------"
 
-echo "installed stuff"
+echo "installed stuff. remove anything suspicious"
 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
 
 
