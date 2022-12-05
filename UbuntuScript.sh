@@ -159,6 +159,20 @@ apt-get purge talk -y -qq
 apt-get purge ldap-utils -y -qq
 apt-get purge rpcbin -y -qq
 
+apt-get install apparmor -y
+apt-get install clamav -y
+#run using clamscan -rbell -i > logs/clamav.txt
+apt-get install rkhunter -y
+#run using rkhunter -c --sk > logs/rkhunter.txt
+apt-get install lynis -y 
+#run using lynis -c --quick > logs/lynis.txt
+git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
+#run using ./privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh > logs/linpeas.txt
+git clone https://github.com/rebootuser/LinEnum
+#run using ./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
+apt-get install -y debsums
+#run using debsums -cae > logs/debsums.txt
+
 touch ~/Desktop/logs/allusers.txt
 uidMin=$(grep "^UID_MIN" /etc/login.defs)
 uidMax=$(grep "^UID_MAX" /etc/login.defs)
