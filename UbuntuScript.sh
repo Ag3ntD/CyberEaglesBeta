@@ -185,24 +185,26 @@ apt-get purge rpcbin -y -qq
 printTime "rpcbin was removed"
 
 apt-get install apparmor -y
+apt-get install apparmor-profiles -y
+
 
 apt-get install clamav -y
-#run using clamscan -rbell -i > logs/clamav.txt
+clamscan -rbell -i > logs/clamav.txt
 
 apt-get install rkhunter -y
-#run using rkhunter -c --sk > logs/rkhunter.txt
+rkhunter -c --sk > logs/rkhunter.txt
 
 apt-get install lynis -y 
-#run using lynis -c --quick > logs/lynis.txt
+lynis -c --quick > logs/lynis.txt
 
 git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
-#run using ./privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh > logs/linpeas.txt
+./privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh > logs/linpeas.txt
 
 git clone https://github.com/rebootuser/LinEnum
-#run using ./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
+./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
 
 apt-get install -y debsums
-#run using debsums -cae > logs/debsums.txt
+debsums -cae > logs/debsums.txt
 
 
 #autoremove
@@ -254,4 +256,5 @@ echo "--------------------------------------"
 echo "installed stuff. remove anything suspicious"
 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
 
+#nmap is a powerful tool look into it
 
