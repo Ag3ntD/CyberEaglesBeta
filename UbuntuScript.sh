@@ -138,8 +138,8 @@ echo "VNC has been removed."
 apt-get purge snmp -y -qq
 echo "SNMP has been removed."
 
-apt-get upgrade openssl libssl-dev
-apt-cache policy openssl libssl-dev
+apt-get upgrade openssl libssl-dev -y
+apt-cache policy openssl libssl-dev -y
 echo "OpenSSL heart bleed bug has been fixed."
 
 apt-get purge ftp -y -qq
