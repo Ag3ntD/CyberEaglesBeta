@@ -215,8 +215,12 @@ clamscan -rbell -i > logs/clamav.txt
 apt-get install rkhunter -y
 rkhunter -c --sk > logs/rkhunter.txt
 
-apt-get install lynis -y 
-lynis -c --quick > logs/lynis.txt
+apt-get install git
+
+git clone https://github.com/CISOfy/lynis
+cd lynis && ./lynis audit system
+#apt-get install lynis -y
+#lynis -c --quick > logs/lynis.txt
 
 git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
 ./privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh > logs/linpeas.txt
