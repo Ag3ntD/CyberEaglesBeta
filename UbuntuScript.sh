@@ -193,7 +193,7 @@ apt-get install apparmor-profiles -y
 
 
 apt-get install clamav -y
-clamscan -rbell -i > logs/clamav.txt
+clamscan -r -o -i > logs/clamav.txt
 
 apt-get install rkhunter -y
 rkhunter -c --sk > logs/rkhunter.txt
