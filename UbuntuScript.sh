@@ -199,6 +199,9 @@ echo "ldap-utils was removed"
 apt-get purge rpcbin -y -qq
 echo "rpcbin was removed"
 
+apt-get purge cups -y -qq
+echo "cups was removed"
+
 echo "creating logs directory"
 mkdir -p logs/
 
