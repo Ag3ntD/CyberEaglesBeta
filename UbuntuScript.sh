@@ -181,6 +181,10 @@ echo "rpcbin was removed"
 apt-get purge cups -y -qq
 echo "cups was removed"
 
+sudo apt-get purge firefox -y -qq
+sudo apt-get install firefox -y
+echo "uninstalled and reinstalled firefox"
+
 echo "creating logs directory"
 mkdir -p logs/
 
