@@ -196,7 +196,6 @@ echo "ldap-utils was removed"
 apt-get purge rpcbin -y -qq
 echo "rpcbin was removed"
 
-
 echo "creating logs directory"
 mkdir -p logs/
 
@@ -233,6 +232,7 @@ echo "installed SELinux"
 #autoremove
 apt autoremove -y
 
+echo 'ExecStart=-/usr/sbin/sulogin'  >> /usr/lib/systemd/system/rescue.service
 
 touch ~/Desktop/logs/allusers.txt
 uidMin=$(grep "^UID_MIN" /etc/login.defs)
