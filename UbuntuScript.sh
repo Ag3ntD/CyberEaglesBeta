@@ -31,7 +31,7 @@ echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pa
 apt-get install libpam-cracklib -y -qq
 sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password
 sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
-apt-get install auditd && auditctl -e 1 -y -qq
+apt-get install auditd && auditctl -y -qq -e 1
 
 #login.defs umask set to 027
 sed -i 's/022/027/g' /etc/login.defs
