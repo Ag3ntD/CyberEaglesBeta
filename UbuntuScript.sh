@@ -243,7 +243,7 @@ echo "installed debsecan"
 #autoremove
 apt autoremove -y
 
-echo 'ExecStart=-/usr/sbin/sulogin'  >> /usr/lib/systemd/system/rescue.service
+#echo 'ExecStart=-/usr/sbin/sulogin'  >> /usr/lib/systemd/system/rescue.service
 
 touch ~/Desktop/logs/allusers.txt
 uidMin=$(grep "^UID_MIN" /etc/login.defs)
