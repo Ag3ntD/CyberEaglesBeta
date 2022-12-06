@@ -2,28 +2,7 @@
 
 # Run chmod +x UbuntuScript.sh to make the file executable
 
-startTime=$(date +"%s")
-printTime()
-{
-    endTime=$(date +"%s")
-    diffTime=$(($endTime-$startTime))
-    if [ $(($diffTime / 60)) -lt 10 ]
-    then
-        if [ $(($diffTime % 60)) -lt 10 ]
-        then
-            echo -e "0$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-        else
-            echo -e "0$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-        fi
-    else
-        if [ $(($diffTime % 60)) -lt 10 ]
-        then
-            echo -e "$(($diffTime / 60)):0$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-        else
-            echo -e "$(($diffTime / 60)):$(($diffTime % 60)) -- $1" >> ~/Desktop/Script.log
-        fi
-    fi
-}
+
 
 touch ~/Desktop/Script.log
 echo > ~/Desktop/Script.log
@@ -238,6 +217,24 @@ nmap scanme.nmap.org
 apt-get install policycoreutils selinux-basics selinux-utils -y
 selinux-activate
 echo "installed SELinux"
+
+sudo apt-get install libpam-tmpdir -y 
+echo "installed libpam-tmpdir"
+
+sudo apt-get install apt-listbugs -y 
+echo "installed apt-listbugs"
+
+sudo apt-get install apt-listchanges -y 
+echo "installed apt-listchanges"
+
+sudo apt-get install fail2ban -y 
+echo "installed fail2ban"
+
+#sudo apt-get install needrestart -y 
+#echo "installed needrestart"
+
+sudo apt-get install debsecan -y 
+echo "installed debsecan"
 
 #autoremove
 apt autoremove -y
