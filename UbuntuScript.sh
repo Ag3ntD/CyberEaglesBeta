@@ -175,9 +175,6 @@ echo "talk was removed"
 apt-get purge ldap-utils -y -qq
 echo "ldap-utils was removed"
 
-apt-get purge rpcbin -y -qq
-echo "rpcbin was removed"
-
 apt-get purge cups -y -qq
 echo "cups was removed"
 
