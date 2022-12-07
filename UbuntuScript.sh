@@ -247,9 +247,9 @@ echo "installed fail2ban"
 apt-get install debsecan -y 
 echo "installed debsecan"
 
-apt-get install aide -y
-sudo aide --init
-echo "installed AIDE"
+#apt-get install aide -y
+#sudo aideinit
+#echo "installed AIDE"
 
 #autoremove
 apt autoremove -y
