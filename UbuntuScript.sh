@@ -124,8 +124,16 @@ apt-get upgrade openssl libssl-dev -y
 apt-cache policy openssl libssl-dev -y
 echo "OpenSSL heart bleed bug has been fixed."
 
-apt-get purge ftp -y -qq
-echo "ftp was removed"
+echo "Is FTP required?[y/n]"
+readname answer
+if [$answer = "y"]
+then
+  sudo apt-get install vsftpd -y
+  echo 'ftpd_banner=Only authorized personnel only' >> /etc/vsftpd.conf
+else
+  apt-get purge ftp -y -qq
+  echo "ftp was removed"
+fi
 
 apt-get purge vsftpd -y -qq
 echo "vsftpd was removed"
@@ -208,6 +216,8 @@ git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-su
 git clone https://github.com/rebootuser/LinEnum
 ./LinEnum/LinEnum.sh > logs/linenum.txt > logs/linenum.txt
 
+apt-get install rsyslog -y
+
 apt-get install debsums -y
 debsums -cae > logs/debsums.txt
 
@@ -219,23 +229,27 @@ apt-get install policycoreutils selinux-basics selinux-utils -y
 selinux-activate
 echo "installed SELinux"
 
-sudo apt-get install libpam-tmpdir -y 
+apt-get install libpam-tmpdir -y 
 echo "installed libpam-tmpdir"
 
-sudo apt-get install apt-listbugs -y 
+apt-get install apt-listbugs -y 
 echo "installed apt-listbugs"
 
-sudo apt-get install apt-listchanges -y 
+apt-get install apt-listchanges -y 
 echo "installed apt-listchanges"
 
-sudo apt-get install fail2ban -y 
+apt-get install fail2ban -y 
 echo "installed fail2ban"
 
-#sudo apt-get install needrestart -y 
+#apt-get install needrestart -y 
 #echo "installed needrestart"
 
-sudo apt-get install debsecan -y 
+apt-get install debsecan -y 
 echo "installed debsecan"
+
+apt-get install aide -y
+sudo aide --init
+echo "installed AIDE"
 
 #autoremove
 apt autoremove -y
