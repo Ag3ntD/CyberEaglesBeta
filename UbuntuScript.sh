@@ -99,9 +99,6 @@ echo "SipCrack has been removed."
 apt-get purge irpas -y -qq
 echo "IRPAS has been removed."
 
-echo 'Are there any hacking tools shown? (not counting libcrack2:amd64 or cracklib-runtime)'
-dpkg -l | egrep "crack|hack" >> ~/Desktop/Script.log
-
 apt-get purge zeitgeist* rhythmbox-plugin-zeitgeist zeitgeist -y -qq
 echo "Zeitgeist has been removed."
 
@@ -300,7 +297,7 @@ echo "--------------------------------------"
 
 echo "installed stuff located at logs/apps.txt"
 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u) > logs/apps.txt
-
+comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
 #nmap is a powerful tool look into it
 echo "check log files for any warnings"
 
