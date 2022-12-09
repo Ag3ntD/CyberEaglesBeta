@@ -121,16 +121,16 @@ apt-get upgrade openssl libssl-dev -y
 apt-cache policy openssl libssl-dev -y
 echo "OpenSSL heart bleed bug has been fixed."
 
-echo "Is FTP required?[y/n]"
-readname answer
-if [$answer = "y"]
-then
-  sudo apt-get install vsftpd -y
-  echo 'ftpd_banner=Only authorized personnel only' >> /etc/vsftpd.conf
-else
-  apt-get purge ftp -y -qq
-  echo "ftp was removed"
-fi
+#echo "Is FTP required?[y/n]"
+#readname answer
+#if [$answer = "y"]
+#then
+#  sudo apt-get install vsftpd -y
+#  echo 'ftpd_banner=Only authorized personnel only' >> /etc/vsftpd.conf
+#else
+#  apt-get purge ftp -y -qq
+#  echo "ftp was removed"
+#fi
 
 apt-get purge vsftpd -y -qq
 echo "vsftpd was removed"
